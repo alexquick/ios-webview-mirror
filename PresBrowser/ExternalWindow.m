@@ -89,6 +89,7 @@
 
 - (int) orientationOrder: (UIInterfaceOrientation) orientation{
     switch (orientation) {
+        case UIInterfaceOrientationUnknown:
         case UIInterfaceOrientationLandscapeRight:
             return 0;
         case UIInterfaceOrientationPortrait:
@@ -103,6 +104,7 @@
 
 - (UIInterfaceOrientation)successor: (UIInterfaceOrientation)current{
     switch (current) {
+        case UIInterfaceOrientationUnknown:
         case UIInterfaceOrientationLandscapeRight:
             return UIInterfaceOrientationPortrait;
         case UIInterfaceOrientationPortrait:

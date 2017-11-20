@@ -9,6 +9,7 @@
 #import "RootViewController.h"
 #import <UIKit/UIKit.h>
 
+static NSString * const kDefaultSite = @"https://p.datadoghq.com/sb/7a2f199a2-d591505cca";
 @interface RootViewController ()
 
 @end
@@ -21,6 +22,7 @@
 @synthesize mainWebView;
 @synthesize secondWindow;
 @synthesize containingView;
+@synthesize server;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -28,7 +30,9 @@
     if (self) {
         imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 0, 0)];
         mainWebView = [[PresWebView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+        server = [[WDServer alloc] initWithName: [[UIDevice currentDevice] name]];
         idleTimer = [WDResettableTimer resettableTimerWithTimeInterval:kIdleTimeout target:self selector:@selector(didGoIdle) repeats:true];
+        [server start];
     }
     return self;
 }
@@ -147,7 +151,7 @@
     
     secondWindow = [[ExternalWindow alloc] initWithFrame:externalFrame];
     [secondWindow checkForInitialScreen];
-    [mainWebView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://fireball.lga.appfigures.com/rrd/"]]];
+    [mainWebView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:kDefaultSite]]];
 	
     
     // Do any additional setup after loading the view from its nib.

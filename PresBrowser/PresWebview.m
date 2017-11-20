@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Oz Michaeli. All rights reserved.
 //
 
-#import "PresWebView.h"
+#import "PresWebview.h"
 
 @implementation PresWebView
 @synthesize renderSize;
@@ -22,6 +22,7 @@
 }
 
 - (void)awakeFromNib{
+    [super awakeFromNib];
     [self setup];
 }
 
@@ -132,14 +133,14 @@
     // mucking with the meta is worth a shot, thanks stackoverflow
     // make the viewport the size of the external display and then scale.
     // that way the site lays out as it would if natively rendered on the external
-    NSString *script = [NSString stringWithFormat:@"document.querySelector('meta[name=viewport]')"
-                                                    ".setAttribute('content', '"
-                                                    "width=%d,"
-                                                    "initial-scale=%.2f,"
-                                                    "minimum-scale=%.2f,"
-                                                    "');",
-                                                    width, scale, scale];
-    [self stringByEvaluatingJavaScriptFromString:script];
+    //NSString *script = [NSString stringWithFormat:@"document.querySelector('meta[name=viewport]')"
+    //                                                ".setAttribute('content', '"
+    //                                                "width=%d,"
+    //                                                "initial-scale=%.2f,"
+    //                                                "minimum-scale=%.2f,"
+    //                                                "');",
+    //                                                width, scale, scale];
+    //[self stringByEvaluatingJavaScriptFromString:script];
 }
 
 - (UIImage*)screenshot{
@@ -165,7 +166,7 @@
     
     if (error.code == NSURLErrorCancelled) return;
     
-	[[[UIAlertView alloc] initWithTitle:@"Error" message:[error localizedDescription] delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil] show];
+	//[[[UIAlertView alloc] initWithTitle:@"Error" message:[error localizedDescription] delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil] show];
 }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {

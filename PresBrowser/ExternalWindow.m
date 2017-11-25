@@ -138,7 +138,7 @@
 - (void)handleScreenDidDisconnectNotification:(NSNotification*)aNotification
 {
     self.isActive = NO;
-    self.screen = nil;
+    self.screen = [UIScreen mainScreen];
     self.hidden = YES;
     [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationExternalDisplayChange object:self];
 }

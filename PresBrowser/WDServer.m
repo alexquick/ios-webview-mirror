@@ -7,7 +7,7 @@
 //
 
 #import "WDServer.h"
-#import <GCDAsyncUdpSocket.h>
+#import <CocoaAsyncSocket/GCDAsyncUdpSocket.h>
 
 static NSString * const kServerExit = @"EXIT";
 static NSString * const kAnnounce = @"HELLO";
@@ -107,7 +107,7 @@ static int const PORT = 40450;
 /**
  * Called when the datagram with the given tag has been sent.
  **/
-- (void)onUdpSocket:(AsyncUdpSocket *)sock didSendDataWithTag:(long)tag{
+- (void)onUdpSocket:(GCDAsyncUdpSocket *)sock didSendDataWithTag:(long)tag{
     
 }
 
@@ -115,7 +115,7 @@ static int const PORT = 40450;
  * Called if an error occurs while trying to send a datagram.
  * This could be due to a timeout, or something more serious such as the data being too large to fit in a sigle packet.
  **/
-- (void)onUdpSocket:(AsyncUdpSocket *)sock didNotSendDataWithTag:(long)tag dueToError:(NSError *)error{
+- (void)onUdpSocket:(GCDAsyncUdpSocket *)sock didNotSendDataWithTag:(long)tag dueToError:(NSError *)error{
     
 }
 
@@ -137,7 +137,7 @@ static int const PORT = 40450;
  *
  * Under normal circumstances, you simply return YES from this method.
  **/
-- (BOOL)onUdpSocket:(AsyncUdpSocket *)sock
+- (BOOL)onUdpSocket:(GCDAsyncUdpSocket *)sock
      didReceiveData:(NSData *)data
             withTag:(long)tag
            fromHost:(NSString *)host
@@ -158,7 +158,7 @@ static int const PORT = 40450;
  * Called if an error occurs while trying to receive a requested datagram.
  * This is generally due to a timeout, but could potentially be something else if some kind of OS error occurred.
  **/
-- (void)onUdpSocket:(AsyncUdpSocket *)sock didNotReceiveDataWithTag:(long)tag dueToError:(NSError *)error{
+- (void)onUdpSocket:(GCDAsyncUdpSocket *)sock didNotReceiveDataWithTag:(long)tag dueToError:(NSError *)error{
     
 }
 
@@ -166,7 +166,7 @@ static int const PORT = 40450;
  * Called when the socket is closed.
  * A socket is only closed if you explicitly call one of the close methods.
  **/
-- (void)onUdpSocketDidClose:(AsyncUdpSocket *)sock{
+- (void)onUdpSocketDidClose:(GCDAsyncUdpSocket *)sock{
     
 }
 

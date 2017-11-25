@@ -7,10 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <AsyncUdpSocket.h>
-#import <GCDAsyncUdpSocket.h>
+#import <CocoaAsyncSocket/GCDAsyncUdpSocket.h>
 
-@interface WDServer : NSObject <AsyncUdpSocketDelegate>
+@interface WDServer : NSObject <GCDAsyncUdpSocketDelegate>
 -(WDServer*) initWithName: (NSString*)name;
 -(void) start;
 -(void) end;

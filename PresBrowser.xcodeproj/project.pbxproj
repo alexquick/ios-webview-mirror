@@ -18,14 +18,14 @@
 		2DBB4E61172381E300149D44 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DBB4E60172381E300149D44 /* Default@2x.png */; };
 		2DBB4E63172381E300149D44 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DBB4E62172381E300149D44 /* Default-568h@2x.png */; };
 		FA009A271887636400E115A0 /* ExternalWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = FA009A261887636400E115A0 /* ExternalWindow.m */; };
-		FA009A2A1887674300E115A0 /* PresWebview.m in Sources */ = {isa = PBXBuildFile; fileRef = FA009A291887674300E115A0 /* PresWebview.m */; };
 		FA009A38188F336900E115A0 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA009A36188F336900E115A0 /* RootViewController.m */; };
 		FA009A39188F336900E115A0 /* RootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA009A37188F336900E115A0 /* RootViewController.xib */; };
 		FA2C17D81892329C004380BE /* WDTableAutocompletionController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA2C17D71892329C004380BE /* WDTableAutocompletionController.m */; };
 		FA2C17DE18A048C5004380BE /* WDResettableTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = FA2C17DD18A048C5004380BE /* WDResettableTimer.m */; };
 		FA2C17E218A0637F004380BE /* rotate.png in Resources */ = {isa = PBXBuildFile; fileRef = FA2C17E118A0637F004380BE /* rotate.png */; };
 		FA2C17E518A73099004380BE /* WDSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = FA2C17E418A73099004380BE /* WDSettings.m */; };
-		FA72E27118C158DC0039DB78 /* WDServer.m in Sources */ = {isa = PBXBuildFile; fileRef = FA72E27018C158DC0039DB78 /* WDServer.m */; };
+		FA88EE1A1FC9FC3200E394A6 /* WDServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA88EE191FC9FC3200E394A6 /* WDServer.swift */; };
+		FAB47C361FD0828000DBC14D /* PresViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB47C351FD0828000DBC14D /* PresViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,8 +47,6 @@
 		80E1B1E0C2E3F13374273C93 /* Pods_PresBrowser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PresBrowser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA009A251887636400E115A0 /* ExternalWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExternalWindow.h; sourceTree = "<group>"; };
 		FA009A261887636400E115A0 /* ExternalWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExternalWindow.m; sourceTree = "<group>"; };
-		FA009A281887674300E115A0 /* PresWebview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PresWebview.h; sourceTree = "<group>"; };
-		FA009A291887674300E115A0 /* PresWebview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PresWebview.m; sourceTree = "<group>"; };
 		FA009A35188F336900E115A0 /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
 		FA009A36188F336900E115A0 /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
 		FA009A37188F336900E115A0 /* RootViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RootViewController.xib; sourceTree = "<group>"; };
@@ -59,8 +57,9 @@
 		FA2C17E118A0637F004380BE /* rotate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rotate.png; sourceTree = "<group>"; };
 		FA2C17E318A73099004380BE /* WDSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WDSettings.h; sourceTree = "<group>"; };
 		FA2C17E418A73099004380BE /* WDSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WDSettings.m; sourceTree = "<group>"; };
-		FA72E26F18C158DC0039DB78 /* WDServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WDServer.h; sourceTree = "<group>"; };
-		FA72E27018C158DC0039DB78 /* WDServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WDServer.m; sourceTree = "<group>"; };
+		FA88EE181FC9FC3200E394A6 /* PresBrowser-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PresBrowser-Bridging-Header.h"; sourceTree = "<group>"; };
+		FA88EE191FC9FC3200E394A6 /* WDServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WDServer.swift; sourceTree = "<group>"; };
+		FAB47C351FD0828000DBC14D /* PresViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,16 +117,15 @@
 				2DBB4E53172381E200149D44 /* Supporting Files */,
 				FA009A251887636400E115A0 /* ExternalWindow.h */,
 				FA009A261887636400E115A0 /* ExternalWindow.m */,
-				FA009A281887674300E115A0 /* PresWebview.h */,
-				FA009A291887674300E115A0 /* PresWebview.m */,
 				FA2C17DC18A048C5004380BE /* WDResettableTimer.h */,
 				FA2C17DD18A048C5004380BE /* WDResettableTimer.m */,
 				FA2C17D61892329C004380BE /* WDTableAutocompletionController.h */,
 				FA2C17D71892329C004380BE /* WDTableAutocompletionController.m */,
 				FA2C17E318A73099004380BE /* WDSettings.h */,
 				FA2C17E418A73099004380BE /* WDSettings.m */,
-				FA72E26F18C158DC0039DB78 /* WDServer.h */,
-				FA72E27018C158DC0039DB78 /* WDServer.m */,
+				FA88EE191FC9FC3200E394A6 /* WDServer.swift */,
+				FA88EE181FC9FC3200E394A6 /* PresBrowser-Bridging-Header.h */,
+				FAB47C351FD0828000DBC14D /* PresViewController.swift */,
 			);
 			path = PresBrowser;
 			sourceTree = "<group>";
@@ -190,6 +188,7 @@
 				TargetAttributes = {
 					2DBB4E48172381E200149D44 = {
 						DevelopmentTeam = KYLASE6Z6T;
+						LastSwiftMigration = 0910;
 					};
 				};
 			};
@@ -267,11 +266,11 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-PresBrowser/Pods-PresBrowser-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/CocoaAsyncSocket/CocoaAsyncSocket.framework",
+				"${BUILT_PRODUCTS_DIR}/Swifter/Swifter.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaAsyncSocket.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Swifter.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -285,14 +284,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FA009A2A1887674300E115A0 /* PresWebview.m in Sources */,
 				FA2C17DE18A048C5004380BE /* WDResettableTimer.m in Sources */,
 				2DBB4E59172381E300149D44 /* main.m in Sources */,
+				FA88EE1A1FC9FC3200E394A6 /* WDServer.swift in Sources */,
 				FA2C17E518A73099004380BE /* WDSettings.m in Sources */,
+				FAB47C361FD0828000DBC14D /* PresViewController.swift in Sources */,
 				2DBB4E5D172381E300149D44 /* AppDelegate.m in Sources */,
 				FA009A271887636400E115A0 /* ExternalWindow.m in Sources */,
 				FA009A38188F336900E115A0 /* RootViewController.m in Sources */,
-				FA72E27118C158DC0039DB78 /* WDServer.m in Sources */,
 				FA2C17D81892329C004380BE /* WDTableAutocompletionController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -404,6 +403,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 61A8A2B190130CFEA13EEA5A /* Pods-PresBrowser.debug.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = KYLASE6Z6T;
@@ -411,9 +411,13 @@
 				GCC_PREFIX_HEADER = "PresBrowser/PresBrowser-Prefix.pch";
 				INFOPLIST_FILE = "PresBrowser/PresBrowser-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.appfigures.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "PresBrowser/PresBrowser-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -422,6 +426,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 667D909513D565D511ED6700 /* Pods-PresBrowser.release.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = KYLASE6Z6T;
@@ -429,9 +434,12 @@
 				GCC_PREFIX_HEADER = "PresBrowser/PresBrowser-Prefix.pch";
 				INFOPLIST_FILE = "PresBrowser/PresBrowser-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.appfigures.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "PresBrowser/PresBrowser-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

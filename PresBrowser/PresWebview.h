@@ -8,27 +8,27 @@
 
 #import <UIKit/UIKit.h>
 #import "ExternalWindow.h"
+#import "PresBrowser-Swift.h"
 
 static  NSString * const kNotificationUserActivity = @"WDUserActivity";
 
-@interface PresWebView : UIWebView <UIWebViewDelegate>
-
-typedef enum {
-    PresWebViewAspectScaled,
-    PresWebViewAspectNative,
-}PresWebViewAspectType;
+@interface PresWebViewOld : UIWebView <UIWebViewDelegate, WDServerDelegate>
 
 @property (nonatomic) CGRect containerFrame;
 @property (nonatomic) CGSize renderSize;
-@property (nonatomic) PresWebViewAspectType currentAspect;
+@property (nonatomic) bool scaleViewport;
+
+@property (nonatomic) AspectType currentAspect;
 @property (strong, nonatomic) ExternalWindow *linkedWindow;
 
 - (void) relayout;
+- (void) refresh;
 - (void)rescaleWebViewContent;
 - (UIImage*)screenshot;
-- (void) assumeAspect: (PresWebViewAspectType) aspect;
+- (void) assumeAspect: (AspectType) aspect;
 - (void) linkWindow:(ExternalWindow*) window;
 - (void) unlinkWindow;
 -(CGRect) frameInContainer: (CGRect) container;
+- (void)navigateWithUrl: (NSString *) url;
 
 @end

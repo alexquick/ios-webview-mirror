@@ -9,7 +9,7 @@
 #import "RootViewController.h"
 #import <UIKit/UIKit.h>
 
-static NSString * const kDefaultSite = @"https://p.datadoghq.com/sb/7a2f199a2-d591505cca";
+static NSString * const kDefaultSite = @"https://p.datadoghq.com/sb/7a2f199a2-d591505cca?tv_mode=true";
 @interface RootViewController ()
 
 @end
@@ -19,7 +19,7 @@ static NSString * const kDefaultSite = @"https://p.datadoghq.com/sb/7a2f199a2-d5
 @synthesize urlField;
 @synthesize rotateButton;
 @synthesize imageView;
-@synthesize mainWebView;
+@synthesize presViewController;
 @synthesize secondWindow;
 @synthesize containingView;
 @synthesize server;
@@ -29,10 +29,16 @@ static NSString * const kDefaultSite = @"https://p.datadoghq.com/sb/7a2f199a2-d5
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 0, 0)];
-        mainWebView = [[PresWebView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
-        server = [[WDServer alloc] initWithName: [[UIDevice currentDevice] name]];
+        presViewController = [[PresViewController alloc] initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+        
+        server = [[WDServer alloc] initWithName: [[UIDevice currentDevice] name] delegate:  presViewController];
         idleTimer = [WDResettableTimer resettableTimerWithTimeInterval:kIdleTimeout target:self selector:@selector(didGoIdle) repeats:true];
-        [server start];
+        NSError *error = nil;
+        BOOL ok = [server startAndReturnError:(&error)];
+        if(!ok){
+            NSLog(@"%@ error with starting", error);
+        }
+        
     }
     return self;
 }
@@ -44,32 +50,28 @@ static NSString * const kDefaultSite = @"https://p.datadoghq.com/sb/7a2f199a2-d5
 
 - (void)textFieldDidEndEditing:(UITextField*)textField
 {
-    NSString *text = textField.text;
-    if(![text hasPrefix: @"http"]){
-        text = [NSString stringWithFormat:@"http://%@", text];
-    }
-	[mainWebView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:text]]];
+    NSURL *url = [NSURL URLWithString:textField.text];
+    [presViewController navigateWithUrl: url];
 }
 
 - (void) onTick{
-    UIImage *image = [mainWebView screenshot];
-    imageView.image = image;
-    secondWindow.imageView.image = image;
+    UIImage *image = [presViewController screenshot];
+    //imageView.image = image;
+    //secondWindow.imageView.image = image;
 }
 
 - (IBAction) rotate{
     [secondWindow rotate:[secondWindow successor:secondWindow.orientation] animate:YES];
-    imageView.frame = [mainWebView frameInContainer: containingView.bounds];
-    return;
+    imageView.frame = [presViewController calculateFrameWithBounds: containingView.bounds];
 }
 
 - (void) handleDisplayChange{
     if(secondWindow.isActive){
         [idleTimer start];
-        [mainWebView linkWindow: secondWindow];
+        [presViewController linkWithWindow:secondWindow];
     }else{
         [idleTimer stop];
-        [mainWebView unlinkWindow];
+        [presViewController unlinkWindow];
         if(onExternal){
             [self setWebOnFirstScreen];
         }
@@ -82,8 +84,8 @@ static NSString * const kDefaultSite = @"https://p.datadoghq.com/sb/7a2f199a2-d5
         NSLog(@"Attempted to swap to primary screen while already there");
         return;
     }
-    [self.containingView addSubview:mainWebView];
-    [mainWebView assumeAspect:PresWebViewAspectScaled];
+    [self.containingView addSubview:presViewController.view];
+    [presViewController assumeWithAspect:AspectTypeScaled];
     imageView.hidden = YES;
     secondWindow.imageView.hidden = NO;
     onExternal = false;
@@ -101,10 +103,9 @@ static NSString * const kDefaultSite = @"https://p.datadoghq.com/sb/7a2f199a2-d5
         NSLog(@"Attempted to swap to external while it was inactive");
         return;
     }
-    
-    imageView.frame = mainWebView.frame;
-    [secondWindow addSubview:mainWebView];
-    [mainWebView assumeAspect:PresWebViewAspectNative];
+    imageView.frame = presViewController.view.frame;
+    [secondWindow addSubview:presViewController.view];
+    [presViewController assumeWithAspect:AspectTypeNative];
     [self onTick];
     secondWindow.imageView.hidden = YES;
     imageView.hidden = NO;
@@ -125,9 +126,10 @@ static NSString * const kDefaultSite = @"https://p.datadoghq.com/sb/7a2f199a2-d5
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [containingView addSubview:mainWebView];
+    [containingView addSubview:presViewController.view];
     [containingView addSubview:imageView];
-    mainWebView.frame = containingView.bounds;
+    
+    presViewController.view.frame = containingView.bounds;
     imageView.frame = containingView.bounds;
     
     onExternal = false;
@@ -137,7 +139,7 @@ static NSString * const kDefaultSite = @"https://p.datadoghq.com/sb/7a2f199a2-d5
     imageView.backgroundColor = [UIColor purpleColor];
     imageView.userInteractionEnabled = YES;
     
-    [mainWebView assumeAspect:PresWebViewAspectScaled];
+    [presViewController assumeWithAspect:AspectTypeScaled];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDisplayChange)  name:kNotificationExternalDisplayChange object:nil];
     
@@ -151,18 +153,17 @@ static NSString * const kDefaultSite = @"https://p.datadoghq.com/sb/7a2f199a2-d5
     
     secondWindow = [[ExternalWindow alloc] initWithFrame:externalFrame];
     [secondWindow checkForInitialScreen];
-    [mainWebView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:kDefaultSite]]];
-	
-    
+    [presViewController navigateWithUrl: [NSURL URLWithString:kDefaultSite]];
+
     // Do any additional setup after loading the view from its nib.
 }
 
 - (void) viewDidAppear:(BOOL)animated{
-    [mainWebView relayout];
+    [presViewController relayout];
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{
-    [mainWebView relayout];
+    [presViewController relayout];
 }
 
 - (void)didReceiveMemoryWarning

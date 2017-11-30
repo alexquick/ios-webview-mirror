@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Oz Michaeli. All rights reserved.
 //
 
-#import "WDServer.h"
+#import "WDServerOld.h"
 #import <CocoaAsyncSocket/GCDAsyncUdpSocket.h>
 
 static NSString * const kServerExit = @"EXIT";
@@ -17,7 +17,7 @@ static NSString * const SERVER = @"192.168.0.200";
 static int const PORT = 40450;
 
 @interface WDMessage : NSObject
-- (WDMessage*) initWithServer: (WDServer*) server command:(NSString*) command args:(NSArray*) args;
+- (WDMessage*) initWithServer: (WDServerOld*) server command:(NSString*) command args:(NSArray*) args;
 @property (strong, nonatomic) NSUUID *uuid;
 @property (strong, nonatomic) NSString *serverName;
 @property (strong, nonatomic) NSString *command;
@@ -26,10 +26,10 @@ static int const PORT = 40450;
 
 @implementation WDMessage : NSObject
 
-+ (WDMessage *)messageFrom: (WDServer*) server command:(NSString*) command{
++ (WDMessage *)messageFrom: (WDServerOld*) server command:(NSString*) command{
     return [WDMessage messageFrom:server command:command args: nil];
 }
-+ (WDMessage *)messageFrom: (WDServer*) server command:(NSString*) command args:(NSArray*) args {
++ (WDMessage *)messageFrom: (WDServerOld*) server command:(NSString*) command args:(NSArray*) args {
     return [[WDMessage alloc] initWithServer: server command: command args: args];
 }
 
@@ -60,7 +60,7 @@ static int const PORT = 40450;
     return [[data componentsJoinedByString:@"\t"] dataUsingEncoding:NSUTF8StringEncoding];
 }
 
-- (WDMessage*) initWithServer: (WDServer*) server command:(NSString*) command args:(NSArray*) args{
+- (WDMessage*) initWithServer: (WDServerOld*) server command:(NSString*) command args:(NSArray*) args{
     if(nil != (self = [super init])){
         self.uuid = server.uuid;
         self.command = command;
@@ -73,8 +73,8 @@ static int const PORT = 40450;
 
 @end
 
-@implementation WDServer
-- (WDServer*) initWithName: (NSString*)name{
+@implementation WDServerOld
+- (WDServerOld*) initWithName: (NSString*)name{
     if(nil != (self = [super init])){
         self.uuid = [NSUUID UUID];
         self.name = name;

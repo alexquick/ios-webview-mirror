@@ -8,9 +8,10 @@
 
 #import "PresWebview.h"
 
-@implementation PresWebView
+@implementation PresWebViewOld
 @synthesize renderSize;
 @synthesize containerFrame;
+@synthesize scaleViewport;
 
 - (id)initWithFrame:(CGRect)frame 
 {
@@ -28,13 +29,13 @@
 
 -(void) setup{
     self.containerFrame = self.frame;
-    self.scalesPageToFit = YES;
+    self.scalesPageToFit = FALSE;
     self.renderSize = containerFrame.size;
     self.linkedWindow = nil;
     self.delegate = self;
 }
 
-- (void) assumeAspect:(PresWebViewAspectType)aspect{
+- (void) assumeAspect:(AspectType)aspect{
     if(self.currentAspect == aspect){
         return;
     }
@@ -62,7 +63,7 @@
     [self updateContainer];
     CGSize priorSize = self.frame.size;
     CGPoint priorScrollOffset = self.scrollView.contentOffset;
-    if(self.currentAspect == PresWebViewAspectScaled){
+    if(self.currentAspect == AspectTypeScaled){
         self.frame = [self frameInContainer: containerFrame];
     }else{
         self.frame = CGRectMake(0, 0, self.renderSize.width, self.renderSize.height);
@@ -133,14 +134,14 @@
     // mucking with the meta is worth a shot, thanks stackoverflow
     // make the viewport the size of the external display and then scale.
     // that way the site lays out as it would if natively rendered on the external
-    //NSString *script = [NSString stringWithFormat:@"document.querySelector('meta[name=viewport]')"
-    //                                                ".setAttribute('content', '"
-    //                                                "width=%d,"
-    //                                                "initial-scale=%.2f,"
-    //                                                "minimum-scale=%.2f,"
-    //                                                "');",
-    //                                                width, scale, scale];
-    //[self stringByEvaluatingJavaScriptFromString:script];
+    NSString *script = [NSString stringWithFormat:@"document.querySelector('meta[name=viewport]')"
+                                                   ".setAttribute('content', '"
+                                                   "width=%d,"
+                                                "initial-scale=%.2f,"
+                                                "minimum-scale=%.2f,"
+                                                "');",
+                                                width, scale, scale];
+    [self stringByEvaluatingJavaScriptFromString:script];
 }
 
 - (UIImage*)screenshot{
@@ -186,6 +187,13 @@
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
     [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationUserActivity object:self];
+}
+
+- (void)navigateWithUrl: (NSString *) url{
+    if(![url hasPrefix: @"http"]){
+        url = [NSString stringWithFormat:@"http://%@", url];
+    }
+    [self loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:url]]];
 }
 
 /*

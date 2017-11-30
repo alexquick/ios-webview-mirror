@@ -11,7 +11,7 @@
 #import "PresWebview.h"
 #import "WDResettableTimer.h"
 #import "WDTableAutocompletionController.h"
-#import "WDServer.h"
+#import "PresBrowser-Swift.h"
 
 static const NSTimeInterval kIdleTimeout = 10.0;
 
@@ -24,7 +24,7 @@ static const NSTimeInterval kIdleTimeout = 10.0;
 - (IBAction) rotate;
 
 @property (strong, nonatomic) ExternalWindow IBOutlet *secondWindow;
-@property (strong, nonatomic) PresWebView IBOutlet *mainWebView;
+@property (strong, nonatomic) PresViewController IBOutlet *presViewController;
 @property (strong, nonatomic) UIImageView IBOutlet *imageView;
 @property (strong, nonatomic) UIView IBOutlet *containingView;
 @property (strong, nonatomic) UIButton IBOutlet *rotateButton;

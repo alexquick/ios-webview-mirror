@@ -26,6 +26,7 @@
 		FA88EE1A1FC9FC3200E394A6 /* WDServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA88EE191FC9FC3200E394A6 /* WDServer.swift */; };
 		FAB47C361FD0828000DBC14D /* PresViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB47C351FD0828000DBC14D /* PresViewController.swift */; };
 		FAE4F2B01FD3857F006A6F9C /* rotate.png in Resources */ = {isa = PBXBuildFile; fileRef = FAE4F2AF1FD3857F006A6F9C /* rotate.png */; };
+		FAE4F2B21FD3A3CA006A6F9C /* PresHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE4F2B11FD3A3CA006A6F9C /* PresHelpers.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -59,6 +60,7 @@
 		FA88EE191FC9FC3200E394A6 /* WDServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WDServer.swift; sourceTree = "<group>"; };
 		FAB47C351FD0828000DBC14D /* PresViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresViewController.swift; sourceTree = "<group>"; };
 		FAE4F2AF1FD3857F006A6F9C /* rotate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rotate.png; sourceTree = "<group>"; };
+		FAE4F2B11FD3A3CA006A6F9C /* PresHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresHelpers.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -123,6 +125,7 @@
 				FA88EE191FC9FC3200E394A6 /* WDServer.swift */,
 				FA88EE181FC9FC3200E394A6 /* PresBrowser-Bridging-Header.h */,
 				FAB47C351FD0828000DBC14D /* PresViewController.swift */,
+				FAE4F2B11FD3A3CA006A6F9C /* PresHelpers.swift */,
 			);
 			path = PresBrowser;
 			sourceTree = "<group>";
@@ -288,6 +291,7 @@
 				FA549FA61FD37A0300577649 /* WDTableAutocompletionController.m in Sources */,
 				FA2C17E518A73099004380BE /* WDSettings.m in Sources */,
 				FAB47C361FD0828000DBC14D /* PresViewController.swift in Sources */,
+				FAE4F2B21FD3A3CA006A6F9C /* PresHelpers.swift in Sources */,
 				2DBB4E5D172381E300149D44 /* AppDelegate.m in Sources */,
 				FA009A271887636400E115A0 /* ExternalWindow.m in Sources */,
 				FA009A38188F336900E115A0 /* RootViewController.m in Sources */,

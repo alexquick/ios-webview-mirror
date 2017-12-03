@@ -11,11 +11,11 @@ import Swifter
 
 @objc
 protocol WDServerDelegate {
-    var shouldScaleWithJavascript : Bool {get set}
-    var shouldScaleWithWebkit : Bool {get set}
-    var url : URL! {get}
+    var url : URL? {get}
+    var renderSize: CGSize {get}
+    var orientation: UIInterfaceOrientation {get}
     func navigate(url: URL)
-    func refresh();
+    func refresh()
 }
 
 class WDServer  : NSObject, NetServiceDelegate {
@@ -27,17 +27,18 @@ class WDServer  : NSObject, NetServiceDelegate {
     let server = HttpServer()
     let port = 4550
 
+    @objc
     public init(name: String, delegate: WDServerDelegate){
         self.name = name
-        self.service = NetService(domain: "local", type: "_presbrowser._tcp.", name: name, port: Int32(port))
+        service = NetService(domain: "local", type: "_presbrowser._tcp.", name: name, port: Int32(port))
         self.delegate = delegate
         super.init()
-        server["/"] = self.rootHandler
+        server["/"] = rootHandler
         server.post["/url"] = {r  in
             let data = r.parseUrlencodedForm()
             let maybeUrlString = data.first(where: {$0.0 == "url"})
             if let (_, urlString) = maybeUrlString, let url = URL(string:urlString) {
-                self.delegate.navigate(url: url)
+                delegate.navigate(url: url)
                 return self.jsonResponse(data:["url": urlString])
             }else{
                 return self.jsonResponse(data:["error": "no url given"], code:400, phrase:"Bad Request")
@@ -46,6 +47,7 @@ class WDServer  : NSObject, NetServiceDelegate {
         service.delegate = self
     }
     
+    @objc
     public func start() throws {
         try server.start(UInt16(port), forceIPv4: true, priority: DispatchQoS.QoSClass.default)
         service.startMonitoring()
@@ -53,18 +55,21 @@ class WDServer  : NSObject, NetServiceDelegate {
     }
     
     private func rootHandler(req: HttpRequest) -> HttpResponse{
-        let body: [String:Any] = ["name": self.name,
-                                  "uuid": self.uuid.uuidString,
-                                  "url": self.delegate.url,
-                                  "scale_webkit": self.delegate.shouldScaleWithWebkit,
-                                  "scale_javascript": self.delegate.shouldScaleWithJavascript]
+        let url = delegate.url ?? URL(string: "about:blank")!
+        let body: [String:Any] = ["name": name,
+                                  "uuid": uuid.uuidString,
+                                  "url": url.absoluteString,
+                                  "height": delegate.renderSize.height,
+                                  "width": delegate.renderSize.width,
+                                  "orientation": delegate.orientation.isPortrait ? "portrait":"landscape"]
         return jsonResponse(data: body)
     }
     
     private func jsonResponse(data:[String: Any], code: Int = 200, phrase: String = "OK") -> HttpResponse{
         do{
             let jsonData = try JSONSerialization.data(withJSONObject: data, options: [])
-            return HttpResponse.raw(code, "", ["Content-Type": "application/json"], {w in try w.write(jsonData)})
+            return HttpResponse.raw(code, "", ["Content-Type": "application/json"],
+                                    {w in try w.write(jsonData)})
         }catch{
             return .badRequest(.text("Error serializing \(data)"))
         }

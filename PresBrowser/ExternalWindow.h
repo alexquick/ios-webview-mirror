@@ -13,6 +13,7 @@ static NSString * const kNotificationExternalDisplayChange = @"WDNotificationExt
 }
 @property (nonatomic) BOOL isActive;
 @property (strong, nonatomic) UIImageView* imageView;
+@property (nonatomic) CGSize size;
 
 - (UIInterfaceOrientation) orientation;
 - (void) rotate: (UIInterfaceOrientation) orientation animate: (BOOL) animate;

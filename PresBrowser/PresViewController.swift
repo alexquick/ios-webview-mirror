@@ -11,43 +11,41 @@ import UIKit
 import WebKit
 
 @objc
-enum AspectType : Int {
-    case scaled
-    case native
-};
-
-@objc
 class PresViewController : UIViewController, WKUIDelegate, WKNavigationDelegate, WDServerDelegate{
-    var shouldScaleWithJavascript: Bool = false
-    var shouldScaleWithWebkit: Bool = false
-    var url: URL!
-    var aspect : AspectType = AspectType.scaled
-    var webView : WKWebView!
-    var linkedWindow : ExternalWindow!
-
-    var frame: CGRect {get {return self.view.frame}}
-    var size: CGSize {get{return self.frame.size}}
-    var renderSize : CGSize { get {
-        if !(self.linkedWindow?.isActive ?? false){
-            return self.containerSize
-        }
-        return self.linkedWindow!.bounds.size
+    private var webView : WKWebView!
+    private var superview : UIView? { return view.superview }
+    private var containerSize : CGSize { return view.superview?.bounds.size ?? CGSize.zero }
+    private var currentNavigation : WKNavigation?
+    private var frame: CGRect { return view.frame}
     
-    } }
-    var superview : UIView? { get {return self.view.superview } }
-    var containerSize : CGSize { get { return self.view.superview?.bounds.size ?? CGSize.zero } }
-    var currentNavigation : WKNavigation?
+    var url: URL?
+    
+    @objc
+    var linkedWindow : ExternalWindow!
+    
+    var renderSize : CGSize {
+        if !(linkedWindow?.isActive ?? false){
+            return containerSize
+        }
+        return linkedWindow!.size
+    }
+    
+    var orientation: UIInterfaceOrientation {
+        return linkedWindow?.orientation() ?? UIInterfaceOrientation.portrait
+    }
     
     func navigate(url: URL) {
         self.url = url
         webView.backgroundColor = UIColor.gray
-        currentNavigation = webView.load(URLRequest(url: self.url))
-        print("-> \(self.url.absoluteURL)")
+        currentNavigation = webView.load(URLRequest(url: url))
+        print("-> \(url.absoluteURL)")
     }
     
     func refresh() {
-        print("Reloading \(url)")
-        webView.reload()
+        if let url = url{
+            print("Reloading \(url)")
+            webView.reload()
+        }
     }
     
     override func loadView() {
@@ -64,63 +62,43 @@ class PresViewController : UIViewController, WKUIDelegate, WKNavigationDelegate,
         super.viewDidLoad()
     }
     
+    @objc
     func setParent(_ parent: UIView){
-        parent.addSubview(self.view)
-        self.view.frame = CGRect(origin: CGPoint(), size: renderSize)
-        self.relayout()
+        parent.addSubview(view)
+        view.frame = CGRect(origin: CGPoint(), size: renderSize)
+        relayout()
     }
     
-    func calculateScale(size: CGSize, into: CGSize) -> CGFloat{
-        //we want to make a layer that is size:into scale to size:size
-        if size == CGSize.zero || into == CGSize.zero{
-            return 1.0
-        }
-        let widthRatio = size.width / into.width
-        let heightRatio = size.height / into.height
-        if(heightRatio < widthRatio){
-            return heightRatio
-        }
-        return widthRatio
-    }
-    
-    func center(_ size: CGSize, containedIn: CGSize) -> CGPoint{
-        let diffWidth = containedIn.width - size.width
-        let diffHeight = containedIn.height - size.height
-        return CGPoint(x:diffWidth/2, y:diffHeight/2)
-    }
-    
+    @objc
     func relayout(){
         if containerSize == CGSize.zero{
             return
         }
-        self.view.transform = CGAffineTransform.identity
-        let scale = self.calculateScale(size: containerSize, into: renderSize)
+        view.transform = CGAffineTransform.identity
+        let scale = calculateScale(size: containerSize, into: renderSize)
         let transform = CGAffineTransform.init(scaleX: scale, y: scale)
         
-        self.view.bounds.size = self.renderSize
-        self.webView.frame.size = self.renderSize
+        view.bounds.size = renderSize
+        webView.frame.size = renderSize
         
-        self.view.frame.origin = center(renderSize.applying(transform), containedIn: containerSize)
-        self.view.layer.anchorPoint = CGPoint.zero
-        self.view.transform = transform
+        view.frame.origin = center(renderSize.applying(transform), containedIn: containerSize)
+        view.layer.anchorPoint = CGPoint.zero
+        view.transform = transform
         report()
     }
     
     func report(){
-        print("frame:\(self.frame) render:\(self.renderSize) container:\(self.containerSize)")
+        print("frame:\(frame) render:\(renderSize) container:\(containerSize)")
     }
     
-    func injectJavascript(){
-        //nop
-    }
-    
+    @objc
     func screenshot() -> UIImage?{
-        let size = self.webView.frame.size;
+        let size = webView.frame.size;
         if size.height == 0 || size.width == 0{
             return nil
         }
-        UIGraphicsBeginImageContextWithOptions(size, self.view.isOpaque, 0.0)
-        self.webView.layer.render(in: UIGraphicsGetCurrentContext()!)
+        UIGraphicsBeginImageContextWithOptions(size, view.isOpaque, 0.0)
+        webView.layer.render(in: UIGraphicsGetCurrentContext()!)
         let img = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         return img;

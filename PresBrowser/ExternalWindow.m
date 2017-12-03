@@ -12,6 +12,7 @@
 @implementation ExternalWindow
 
 @synthesize imageView;
+@synthesize size;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -47,6 +48,7 @@
     [self rotate:currentOrientation animate:false];
     // Finish it
 	self.isActive = YES;
+    self.size = screen.bounds.size;
     self.hidden = NO;
     [[NSNotificationCenter defaultCenter] postNotificationName: kNotificationExternalDisplayChange object:self];
 }
@@ -73,6 +75,7 @@
     imageView.frame = windowBounds;
     
     currentOrientation = orientation;
+    self.size = self.bounds.size;
     [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationExternalDisplayChange object:self];
 }
 
@@ -141,6 +144,7 @@
     self.isActive = NO;
     self.screen = [UIScreen mainScreen];
     self.hidden = YES;
+    self.size = CGSizeZero;
     [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationExternalDisplayChange object:self];
 }
 

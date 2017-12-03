@@ -17,5 +17,4 @@ static NSString * const kNotificationExternalDisplayChange = @"WDNotificationExt
 - (UIInterfaceOrientation) orientation;
 - (void) rotate: (UIInterfaceOrientation) orientation animate: (BOOL) animate;
 - (UIInterfaceOrientation) successor: (UIInterfaceOrientation) current;
-- (void)checkForInitialScreen;
 @end

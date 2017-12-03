@@ -20,12 +20,12 @@
 		FA009A271887636400E115A0 /* ExternalWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = FA009A261887636400E115A0 /* ExternalWindow.m */; };
 		FA009A38188F336900E115A0 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA009A36188F336900E115A0 /* RootViewController.m */; };
 		FA009A39188F336900E115A0 /* RootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA009A37188F336900E115A0 /* RootViewController.xib */; };
-		FA2C17D81892329C004380BE /* WDTableAutocompletionController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA2C17D71892329C004380BE /* WDTableAutocompletionController.m */; };
-		FA2C17DE18A048C5004380BE /* WDResettableTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = FA2C17DD18A048C5004380BE /* WDResettableTimer.m */; };
-		FA2C17E218A0637F004380BE /* rotate.png in Resources */ = {isa = PBXBuildFile; fileRef = FA2C17E118A0637F004380BE /* rotate.png */; };
+		FA2C17E218A0637F004380BE /* refresh.png in Resources */ = {isa = PBXBuildFile; fileRef = FA2C17E118A0637F004380BE /* refresh.png */; };
 		FA2C17E518A73099004380BE /* WDSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = FA2C17E418A73099004380BE /* WDSettings.m */; };
+		FA549FA61FD37A0300577649 /* WDTableAutocompletionController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA549FA41FD37A0300577649 /* WDTableAutocompletionController.m */; };
 		FA88EE1A1FC9FC3200E394A6 /* WDServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA88EE191FC9FC3200E394A6 /* WDServer.swift */; };
 		FAB47C361FD0828000DBC14D /* PresViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB47C351FD0828000DBC14D /* PresViewController.swift */; };
+		FAE4F2B01FD3857F006A6F9C /* rotate.png in Resources */ = {isa = PBXBuildFile; fileRef = FAE4F2AF1FD3857F006A6F9C /* rotate.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,16 +50,15 @@
 		FA009A35188F336900E115A0 /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
 		FA009A36188F336900E115A0 /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
 		FA009A37188F336900E115A0 /* RootViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RootViewController.xib; sourceTree = "<group>"; };
-		FA2C17D61892329C004380BE /* WDTableAutocompletionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WDTableAutocompletionController.h; sourceTree = "<group>"; };
-		FA2C17D71892329C004380BE /* WDTableAutocompletionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WDTableAutocompletionController.m; sourceTree = "<group>"; };
-		FA2C17DC18A048C5004380BE /* WDResettableTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WDResettableTimer.h; sourceTree = "<group>"; };
-		FA2C17DD18A048C5004380BE /* WDResettableTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WDResettableTimer.m; sourceTree = "<group>"; };
-		FA2C17E118A0637F004380BE /* rotate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rotate.png; sourceTree = "<group>"; };
+		FA2C17E118A0637F004380BE /* refresh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = refresh.png; sourceTree = "<group>"; };
 		FA2C17E318A73099004380BE /* WDSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WDSettings.h; sourceTree = "<group>"; };
 		FA2C17E418A73099004380BE /* WDSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WDSettings.m; sourceTree = "<group>"; };
+		FA549FA41FD37A0300577649 /* WDTableAutocompletionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WDTableAutocompletionController.m; sourceTree = "<group>"; };
+		FA549FA51FD37A0300577649 /* WDTableAutocompletionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WDTableAutocompletionController.h; sourceTree = "<group>"; };
 		FA88EE181FC9FC3200E394A6 /* PresBrowser-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PresBrowser-Bridging-Header.h"; sourceTree = "<group>"; };
 		FA88EE191FC9FC3200E394A6 /* WDServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WDServer.swift; sourceTree = "<group>"; };
 		FAB47C351FD0828000DBC14D /* PresViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresViewController.swift; sourceTree = "<group>"; };
+		FAE4F2AF1FD3857F006A6F9C /* rotate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rotate.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,6 +108,8 @@
 		2DBB4E52172381E200149D44 /* PresBrowser */ = {
 			isa = PBXGroup;
 			children = (
+				FA549FA51FD37A0300577649 /* WDTableAutocompletionController.h */,
+				FA549FA41FD37A0300577649 /* WDTableAutocompletionController.m */,
 				FA009A35188F336900E115A0 /* RootViewController.h */,
 				FA009A37188F336900E115A0 /* RootViewController.xib */,
 				FA009A36188F336900E115A0 /* RootViewController.m */,
@@ -117,10 +118,6 @@
 				2DBB4E53172381E200149D44 /* Supporting Files */,
 				FA009A251887636400E115A0 /* ExternalWindow.h */,
 				FA009A261887636400E115A0 /* ExternalWindow.m */,
-				FA2C17DC18A048C5004380BE /* WDResettableTimer.h */,
-				FA2C17DD18A048C5004380BE /* WDResettableTimer.m */,
-				FA2C17D61892329C004380BE /* WDTableAutocompletionController.h */,
-				FA2C17D71892329C004380BE /* WDTableAutocompletionController.m */,
 				FA2C17E318A73099004380BE /* WDSettings.h */,
 				FA2C17E418A73099004380BE /* WDSettings.m */,
 				FA88EE191FC9FC3200E394A6 /* WDServer.swift */,
@@ -133,7 +130,8 @@
 		2DBB4E53172381E200149D44 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				FA2C17E118A0637F004380BE /* rotate.png */,
+				FAE4F2AF1FD3857F006A6F9C /* rotate.png */,
+				FA2C17E118A0637F004380BE /* refresh.png */,
 				2DBB4E54172381E200149D44 /* PresBrowser-Info.plist */,
 				2DBB4E55172381E300149D44 /* InfoPlist.strings */,
 				2DBB4E58172381E300149D44 /* main.m */,
@@ -214,9 +212,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FAE4F2B01FD3857F006A6F9C /* rotate.png in Resources */,
 				2DBB4E57172381E300149D44 /* InfoPlist.strings in Resources */,
 				2DBB4E5F172381E300149D44 /* Default.png in Resources */,
-				FA2C17E218A0637F004380BE /* rotate.png in Resources */,
+				FA2C17E218A0637F004380BE /* refresh.png in Resources */,
 				FA009A39188F336900E115A0 /* RootViewController.xib in Resources */,
 				2DBB4E61172381E300149D44 /* Default@2x.png in Resources */,
 				2DBB4E63172381E300149D44 /* Default-568h@2x.png in Resources */,
@@ -284,15 +283,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FA2C17DE18A048C5004380BE /* WDResettableTimer.m in Sources */,
 				2DBB4E59172381E300149D44 /* main.m in Sources */,
 				FA88EE1A1FC9FC3200E394A6 /* WDServer.swift in Sources */,
+				FA549FA61FD37A0300577649 /* WDTableAutocompletionController.m in Sources */,
 				FA2C17E518A73099004380BE /* WDSettings.m in Sources */,
 				FAB47C361FD0828000DBC14D /* PresViewController.swift in Sources */,
 				2DBB4E5D172381E300149D44 /* AppDelegate.m in Sources */,
 				FA009A271887636400E115A0 /* ExternalWindow.m in Sources */,
 				FA009A38188F336900E115A0 /* RootViewController.m in Sources */,
-				FA2C17D81892329C004380BE /* WDTableAutocompletionController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -36,6 +36,7 @@
         self.backgroundColor = [UIColor orangeColor];
         self.hidden = YES;
         [self addSubview:imageView];
+        [self checkForInitialScreen];
     }
     return self;
 }

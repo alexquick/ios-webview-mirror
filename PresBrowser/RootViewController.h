@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "ExternalWindow.h"
-#import "PresWebview.h"
-#import "WDResettableTimer.h"
 #import "WDTableAutocompletionController.h"
 #import "PresBrowser-Swift.h"
 
@@ -17,15 +15,13 @@ static const NSTimeInterval kIdleTimeout = 10.0;
 
 @interface RootViewController : UIViewController
 {
-    BOOL onExternal;
-    WDResettableTimer *idleTimer;
 }
 
 - (IBAction) rotate;
+- (IBAction) refresh;
 
 @property (strong, nonatomic) ExternalWindow IBOutlet *secondWindow;
 @property (strong, nonatomic) PresViewController IBOutlet *presViewController;
-@property (strong, nonatomic) UIImageView IBOutlet *imageView;
 @property (strong, nonatomic) UIView IBOutlet *containingView;
 @property (strong, nonatomic) UIButton IBOutlet *rotateButton;
 @property (strong, nonatomic) UITextField IBOutlet *urlField;

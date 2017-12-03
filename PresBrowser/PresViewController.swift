@@ -23,22 +23,26 @@ class PresViewController : UIViewController, WKUIDelegate, WKNavigationDelegate,
     var url: URL!
     var aspect : AspectType = AspectType.scaled
     var webView : WKWebView!
-    var linkedWindow : UIWindow!
-    
-    var frame: CGRect {get {return self.view.frame}
-        set(newFrame){
-            print("Setting frame from \(self.view.frame) to \(newFrame)")
-            self.view.frame = newFrame
-        }
+    var linkedWindow : ExternalWindow!
 
-    }
+    var frame: CGRect {get {return self.view.frame}}
     var size: CGSize {get{return self.frame.size}}
-    var renderSize : CGSize = CGSize()
-    var containerFrame : CGRect = CGRect()
+    var renderSize : CGSize { get {
+        if !(self.linkedWindow?.isActive ?? false){
+            return self.containerSize
+        }
+        return self.linkedWindow!.bounds.size
+    
+    } }
+    var superview : UIView? { get {return self.view.superview } }
+    var containerSize : CGSize { get { return self.view.superview?.bounds.size ?? CGSize.zero } }
+    var currentNavigation : WKNavigation?
     
     func navigate(url: URL) {
         self.url = url
-        webView.load(URLRequest(url: self.url))
+        webView.backgroundColor = UIColor.gray
+        currentNavigation = webView.load(URLRequest(url: self.url))
+        print("-> \(self.url.absoluteURL)")
     }
     
     func refresh() {
@@ -51,114 +55,72 @@ class PresViewController : UIViewController, WKUIDelegate, WKNavigationDelegate,
         webView = WKWebView(frame: .zero, configuration: webConfiguration)
         webView.uiDelegate = self
         webView.navigationDelegate = self
-        view = webView
+        view = UIView()
+        view.addSubview(webView)
+        webView.backgroundColor = UIColor.cyan
+        view.backgroundColor = UIColor.brown
     }
     override func viewDidLoad() {
         super.viewDidLoad()
     }
     
-    func link(window: UIWindow){
-        self.linkedWindow = window
-        self.renderSize = window.bounds.size
+    func setParent(_ parent: UIView){
+        parent.addSubview(self.view)
+        self.view.frame = CGRect(origin: CGPoint(), size: renderSize)
         self.relayout()
     }
     
-    func unlinkWindow(){
-        self.linkedWindow = nil;
-        self.renderSize = self.containerFrame.size
-        self.relayout()
+    func calculateScale(size: CGSize, into: CGSize) -> CGFloat{
+        //we want to make a layer that is size:into scale to size:size
+        if size == CGSize.zero || into == CGSize.zero{
+            return 1.0
+        }
+        let widthRatio = size.width / into.width
+        let heightRatio = size.height / into.height
+        if(heightRatio < widthRatio){
+            return heightRatio
+        }
+        return widthRatio
+    }
+    
+    func center(_ size: CGSize, containedIn: CGSize) -> CGPoint{
+        let diffWidth = containedIn.width - size.width
+        let diffHeight = containedIn.height - size.height
+        return CGPoint(x:diffWidth/2, y:diffHeight/2)
     }
     
     func relayout(){
-        report()
-        if self.view.superview == nil{
+        if containerSize == CGSize.zero{
             return
         }
-        self.updateContainer()
-        let priorSize = self.size
-        let priorScrollOffset = self.webView.scrollView.contentOffset
-        if aspect == AspectType.scaled{
-            self.frame = self.calculateFrame(bounds: containerFrame)
-        }else{
-            self.frame = CGRect(origin: CGPoint(), size: renderSize)
-        }
-        self.injectJavascript()
-        if self.size == priorSize || priorSize.height == 0{
-            return
-        }
-        let factor = self.size.height / priorSize.height
-        let scrollOffset = CGPoint(x: priorScrollOffset.x, y: priorScrollOffset.y * factor)
-        self.webView.scrollView.setContentOffset(scrollOffset, animated: false)
-        print("scroll: \(scrollOffset) was: \(priorScrollOffset)")
+        self.view.transform = CGAffineTransform.identity
+        let scale = self.calculateScale(size: containerSize, into: renderSize)
+        let transform = CGAffineTransform.init(scaleX: scale, y: scale)
+        
+        self.view.bounds.size = self.renderSize
+        self.webView.frame.size = self.renderSize
+        
+        self.view.frame.origin = center(renderSize.applying(transform), containedIn: containerSize)
+        self.view.layer.anchorPoint = CGPoint.zero
+        self.view.transform = transform
         report()
     }
     
     func report(){
-        print("aspect: \(aspect.rawValue) frame:\(self.frame) render:\(self.renderSize) container:\(self.containerFrame) scale:\(self.webView.contentScaleFactor)")
+        print("frame:\(self.frame) render:\(self.renderSize) container:\(self.containerSize)")
     }
     
-    func updateContainer(){
-        guard var newSize = self.view.superview?.frame.size else {
-            return
-        }
-        newSize = CGSize(width:round(newSize.width), height:round(newSize.height))
-        if newSize != containerFrame.size{
-            containerFrame.size = newSize
-            containerFrame.origin = CGPoint()
-        }
-        if(renderSize == CGSize()){
-            renderSize = containerFrame.size
-        }
-    }
-    
-    func assume(aspect : AspectType){
-        if self.aspect == aspect{
-            return
-        }
-        self.aspect = aspect
-        self.relayout()
-    }
     func injectJavascript(){
         //nop
     }
-    func calculateFrame(bounds: CGRect) -> CGRect{
-        let augmentedSize = self.scaleSize(size: self.renderSize, maxSize: bounds.size)
-        var frame = CGRect()
-        frame.size = augmentedSize
-        frame.origin = self.calculateCenter(size: augmentedSize, space: bounds)
-        return frame
-    }
-    
-    func scaleSize(size: CGSize, maxSize: CGSize ) -> CGSize{
-        let ratio = size.width / size.height
-        var newWidth = ratio * maxSize.height
-        var newHeight = maxSize.width / ratio
-        
-        if(newWidth > maxSize.width){
-            newWidth = maxSize.width
-            newHeight = maxSize.width /  ratio
-        }
-        if(newHeight > maxSize.height){
-            newHeight = maxSize.height
-            newWidth = ratio * maxSize.height
-        }
-        
-        return CGSize(width: round(newWidth), height: round(newHeight))
-    }
-    
-    func calculateCenter(size: CGSize, space: CGRect) -> CGPoint{
-        let x = (space.size.width - size.width) / 2 + space.origin.x;
-        let y = (space.size.height - size.height) / 2 + space.origin.y;
-        return CGPoint(x:x,y:y);
-    }
     
     func screenshot() -> UIImage?{
-        let size = self.frame.size;
+        let size = self.webView.frame.size;
         if size.height == 0 || size.width == 0{
             return nil
         }
         UIGraphicsBeginImageContextWithOptions(size, self.view.isOpaque, 0.0)
-        self.view.layer.render(in: UIGraphicsGetCurrentContext()!)
+        self.webView.layer.render(in: UIGraphicsGetCurrentContext()!)
         let img = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         return img;
@@ -166,7 +128,19 @@ class PresViewController : UIViewController, WKUIDelegate, WKNavigationDelegate,
     
     func webView(_ webView: WKWebView,
                           didCommit navigation: WKNavigation!){
-        print("Navigating to \(navigation)")
+        print("Navigating to \(navigation.debugDescription)")
+    }
+    
+    func webView(_ webView: WKWebView, didStartProvisionalNavigation navigtion: WKNavigation!) {
+        if (navigtion == currentNavigation){
+            UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        }
+    }
+    
+    func webView(_: WKWebView, didFinish navigation: WKNavigation!) {
+        if navigation == currentNavigation{
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+        }
     }
     
     func webView(_ webView: WKWebView,
@@ -180,6 +154,4 @@ class PresViewController : UIViewController, WKUIDelegate, WKNavigationDelegate,
                  withError error: Error){
         print("Error: \(didFail) -> \(error)")
     }
-    
-    
 }

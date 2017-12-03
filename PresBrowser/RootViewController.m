@@ -7,9 +7,12 @@
 //
 
 #import "RootViewController.h"
+#import "WDSettings.h"
 #import <UIKit/UIKit.h>
 
 static NSString * const kDefaultSite = @"https://p.datadoghq.com/sb/7a2f199a2-d591505cca?tv_mode=true";
+
+//static NSString * const kDefaultSite = @"http://google.com";
 @interface RootViewController ()
 
 @end
@@ -18,7 +21,6 @@ static NSString * const kDefaultSite = @"https://p.datadoghq.com/sb/7a2f199a2-d5
 
 @synthesize urlField;
 @synthesize rotateButton;
-@synthesize imageView;
 @synthesize presViewController;
 @synthesize secondWindow;
 @synthesize containingView;
@@ -28,11 +30,16 @@ static NSString * const kDefaultSite = @"https://p.datadoghq.com/sb/7a2f199a2-d5
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 0, 0)];
         presViewController = [[PresViewController alloc] initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
         
         server = [[WDServer alloc] initWithName: [[UIDevice currentDevice] name] delegate:  presViewController];
-        idleTimer = [WDResettableTimer resettableTimerWithTimeInterval:kIdleTimeout target:self selector:@selector(didGoIdle) repeats:true];
+        containingView.backgroundColor = [UIColor grayColor];
+        CALayer *layer = presViewController.view.layer;
+        layer.shadowOffset = CGSizeMake(0, 3);
+        layer.shadowColor = [UIColor blackColor].CGColor;
+        layer.shadowRadius = 5.0;
+        layer.shadowOpacity = 0.5;
+        
         NSError *error = nil;
         BOOL ok = [server startAndReturnError:(&error)];
         if(!ok){
@@ -50,110 +57,53 @@ static NSString * const kDefaultSite = @"https://p.datadoghq.com/sb/7a2f199a2-d5
 
 - (void)textFieldDidEndEditing:(UITextField*)textField
 {
+    
     NSURL *url = [NSURL URLWithString:textField.text];
     [presViewController navigateWithUrl: url];
 }
 
 - (void) onTick{
     UIImage *image = [presViewController screenshot];
-    //imageView.image = image;
-    //secondWindow.imageView.image = image;
+    secondWindow.imageView.image = image;
 }
 
 - (IBAction) rotate{
     [secondWindow rotate:[secondWindow successor:secondWindow.orientation] animate:YES];
-    imageView.frame = [presViewController calculateFrameWithBounds: containingView.bounds];
+    [presViewController relayout];
 }
+
+- (IBAction) refresh{
+    [presViewController refresh];
+}
+
 
 - (void) handleDisplayChange{
-    if(secondWindow.isActive){
-        [idleTimer start];
-        [presViewController linkWithWindow:secondWindow];
-    }else{
-        [idleTimer stop];
-        [presViewController unlinkWindow];
-        if(onExternal){
-            [self setWebOnFirstScreen];
-        }
-    }
+    [presViewController relayout];
 }
-
-- (void) setWebOnFirstScreen{
-    [idleTimer start];
-    if(!onExternal){
-        NSLog(@"Attempted to swap to primary screen while already there");
-        return;
-    }
-    [self.containingView addSubview:presViewController.view];
-    [presViewController assumeWithAspect:AspectTypeScaled];
-    imageView.hidden = YES;
-    secondWindow.imageView.hidden = NO;
-    onExternal = false;
-}
-
-- (void) setWebOnSecondScreen{
-
-    [idleTimer stop];
-    if(onExternal){
-        NSLog(@"Attempted to swap to external while already on external");
-        return;
-    }
-    
-    if(!secondWindow.isActive){
-        NSLog(@"Attempted to swap to external while it was inactive");
-        return;
-    }
-    imageView.frame = presViewController.view.frame;
-    [secondWindow addSubview:presViewController.view];
-    [presViewController assumeWithAspect:AspectTypeNative];
-    [self onTick];
-    secondWindow.imageView.hidden = YES;
-    imageView.hidden = NO;
-    onExternal = true;
-}
-
-- (void) didGoIdle{
-    NSLog(@"User went idle, trying to go to second screen");
-    [self setWebOnSecondScreen];
-}
-
-- (void) didResumeFromIdle{
-    NSLog(@"User went unidle");
-    [self setWebOnFirstScreen];
-}
-
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [containingView addSubview:presViewController.view];
-    [containingView addSubview:imageView];
-    
-    presViewController.view.frame = containingView.bounds;
-    imageView.frame = containingView.bounds;
-    
-    onExternal = false;
-    
-    imageView.hidden = YES;
-    imageView.alpha = 0.5;
-    imageView.backgroundColor = [UIColor purpleColor];
-    imageView.userInteractionEnabled = YES;
-    
-    [presViewController assumeWithAspect:AspectTypeScaled];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDisplayChange)  name:kNotificationExternalDisplayChange object:nil];
-    
-    // Idle timer
-    [[NSNotificationCenter defaultCenter] addObserver:idleTimer selector:@selector(reset) name:kNotificationUserActivity object:nil];
-    
-    // Rendering timer
-    [NSTimer scheduledTimerWithTimeInterval:0.25 target:self selector:@selector(onTick) userInfo:nil repeats:YES];
     
     CGRect externalFrame = CGRectMake(0, 0, 768, 1280);
     
     secondWindow = [[ExternalWindow alloc] initWithFrame:externalFrame];
-    [secondWindow checkForInitialScreen];
-    [presViewController navigateWithUrl: [NSURL URLWithString:kDefaultSite]];
+    presViewController.linkedWindow = secondWindow;
+    [presViewController setParent: containingView];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDisplayChange)  name:kNotificationExternalDisplayChange object:nil];
+    
+    
+    // Rendering timer
+    [NSTimer scheduledTimerWithTimeInterval:0.25 target:self selector:@selector(onTick) userInfo:nil repeats:YES];
+    
+    WDSettings * settings = [WDSettings instance];
+    if(settings.urlHistory.count == 0){
+        [settings pushUrl:kDefaultSite];
+    }
+    urlField.text = settings.urlHistory.lastObject;
+
+    [presViewController navigateWithUrl: [NSURL URLWithString:urlField.text]];
 
     // Do any additional setup after loading the view from its nib.
 }
@@ -170,21 +120,6 @@ static NSString * const kDefaultSite = @"https://p.datadoghq.com/sb/7a2f199a2-d5
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-- (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
-    if(!onExternal){
-        [super touchesBegan:touches withEvent:event];
-        return;
-    }
-    
-    // catch touches on the imageview that's behind the webview so that
-    // we know when to bring the webview back from the external screen
-    UITouch *touch = [touches anyObject];
-    UIView *touchedView = [touch view];
-    if(touchedView == imageView){
-        [self didResumeFromIdle];
-    }
 }
 
 @end

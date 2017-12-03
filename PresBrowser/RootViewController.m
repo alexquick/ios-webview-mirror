@@ -119,7 +119,7 @@ static NSString * const kDefaultSite = @"https://p.datadoghq.com/sb/7a2f199a2-d5
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    [presViewController refresh]; //to mitigate js leaks
 }
 
 @end
